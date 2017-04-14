@@ -102,11 +102,14 @@ router.delete('/logout', function(req, res) {
 // ***********************************************
 
 // Passport Routes  
-router.get('/auth/provider', passport.authenticate('provider'));  
-router.get('/auth/provider/callback',  
-    passport.authenticate('provider', { successRedirect: '/',  
-                                        failureRedirect: '/login'}));
-
+// Passport Routes  
+router.get('/auth/provider',          passport.authenticate('provider'));  
+router.get('/auth/provider/callback', passport.authenticate('provider', { failureRedirect: '/login' }), 
+    function(req, res) {
+      res.cookie('loggedIn', 'true'); 
+      res.redirect(301, '/#/tasks'); 
+    }
+);  
 
 // Register the router
 app.use(router);
